@@ -12,24 +12,47 @@ using namespace std;
 
 class Solution{
     public:
+    void heapify(vector<int>&arr, int size, int index)
+    {
+        int largest = index;
+        int leftIndex = 2*index + 1;
+        int rightIndex = 2*index + 2;
+        
+        if(leftIndex < size and arr[leftIndex] > arr[largest])
+        {
+            largest = leftIndex;
+        }
+        
+        if(rightIndex < size && arr[rightIndex] > arr[largest])
+        {
+            largest = rightIndex;
+        }
+        
+        if(largest != index)
+        {
+            swap(arr[largest], arr[index]);
+            heapify(arr, size, largest);
+        }
+        
+    }
     vector<int> mergeHeaps(vector<int> &a, vector<int> &b, int n, int m) {
         vector<int>ans;
-        
-        priority_queue<int>pq;
+
         
         for(auto i:a)
         {
-            pq.push(i);
+            ans.push_back(i);
         }
         for(auto i:b)
         {
-            pq.push(i);
+            ans.push_back(i);
         }
         
-        while(!pq.empty())
+        int size = ans.size();
+        
+        for(int i=size/2 - 1; i>=0; i--)
         {
-            ans.push_back(pq.top());
-            pq.pop();
+            heapify(ans, size, i);
         }
         
         return ans;
