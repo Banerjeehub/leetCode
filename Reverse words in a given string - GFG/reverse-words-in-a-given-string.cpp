@@ -21,13 +21,16 @@ class Solution
             }
             else
             {
-                ans = temp +"."+ans;
+                if(!ans.empty()) ans = temp +"."+ans;
+                else ans = temp;
+                
                 temp = "";
             }
         }
         
-        if(!temp.empty()) ans = temp+"."+ans;
-        ans.pop_back();
+        if(!temp.empty() && !ans.empty()) ans = temp+"."+ans;
+        else ans = temp;
+        //ans.pop_back();
         return ans;
     } 
 };
