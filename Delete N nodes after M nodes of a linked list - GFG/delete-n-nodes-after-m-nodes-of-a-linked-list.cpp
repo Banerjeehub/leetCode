@@ -79,21 +79,23 @@ class Solution
     public:
     void linkdelete(struct Node  *head, int M, int N)
     {
-        //skip M && delete N nodes.
-        Node*curr = head;
+        Node* current = head;
         int count = 0;
-        while(curr&&curr->next){    
+        while(current && current->next){    
             
             count++;
             int n = N;
-            if(M == count){
-                count=0;
-                while((n--)&&curr&&curr->next){
-                    curr->next=curr->next->next;
+            
+            if(M == count)
+            {
+                count = 0;
+                while((n--) && current && current->next)
+                {
+                    current->next = current->next->next;
                     
                 }
             }
-        curr=curr->next;
+            current = current->next;
         }
     }
 };
