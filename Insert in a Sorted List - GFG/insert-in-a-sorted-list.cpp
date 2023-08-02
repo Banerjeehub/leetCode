@@ -45,6 +45,8 @@ class Solution{
     // Should return head of the modified linked list
     Node *sortedInsert(struct Node* head, int data) {
         Node* temp = head;
+        
+        // If the correct position is at the first
         if(data < head->data)
         {
             Node* dummy = new Node(data);
@@ -53,11 +55,13 @@ class Solution{
             return head;
         }
         
+        //otherwise we wll traverse till the corect spot
         while(temp->next && data > temp->next->data)
         {
             temp = temp->next;
         }
         
+        //if we have reached the last position and the position is at the end
         if(temp->next == NULL)
         {
             Node* dummy = new Node(data);
@@ -65,6 +69,7 @@ class Solution{
             return head;
         }
         
+        // if it is somewhere in the middle
         Node* dummy = new Node(data);
         Node* connect = temp->next;
         
