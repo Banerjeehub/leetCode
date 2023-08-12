@@ -7,7 +7,7 @@ typedef long long int ll;
 class Solution
 {
     public:
-    //Function to find the maximum money the thief can get.
+    
     int f(int index, int *nums, vector<int>&dp)
     {
         if(index == 0) return nums[index];
