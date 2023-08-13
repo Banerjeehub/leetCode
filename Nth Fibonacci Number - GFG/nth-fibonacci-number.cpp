@@ -22,8 +22,8 @@ class Solution {
     {
         
         vector<int>dp(n+1, -1);
-        n = n % MOD;
-        return solve(n, dp) % MOD;
+        //n = n % MOD;
+        return solve(n, dp) ;
     }
 };
 
