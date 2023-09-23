@@ -1,7 +1,7 @@
 #define vib vector<bool>
 #define vin vector<int>
 #define v2in vector<vector<int>>
-#define add push_back
+#define bhuta push_back
 class Solution {
 private:
     int time = 1;
@@ -18,7 +18,7 @@ private:
                 low[node] = min(low[node], low[it]);
                 if(low[it] > tin[node]) 
                 {
-                    bridges.push_back({it, node});
+                    bridges.bhuta({it, node});
                 }
 
             }
@@ -34,8 +34,8 @@ public:
         vin adj[n];
         for(auto it : connections)
         {
-            adj[it[0]].add(it[1]);
-            adj[it[1]].add(it[0]);
+            adj[it[0]].bhuta(it[1]);
+            adj[it[1]].bhuta(it[0]);
         }
 
         vib visited(n, 0);
