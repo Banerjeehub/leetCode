@@ -1,6 +1,7 @@
 #define vib vector<bool>
 #define vin vector<int>
 #define v2in vector<vector<int>>
+#define add push_back
 class Solution {
 private:
     int time = 1;
@@ -33,8 +34,8 @@ public:
         vin adj[n];
         for(auto it : connections)
         {
-            adj[it[0]].push_back(it[1]);
-            adj[it[1]].push_back(it[0]);
+            adj[it[0]].add(it[1]);
+            adj[it[1]].add(it[0]);
         }
 
         vib visited(n, 0);
