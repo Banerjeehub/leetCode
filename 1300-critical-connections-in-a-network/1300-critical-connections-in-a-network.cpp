@@ -1,26 +1,26 @@
-#define vib vector<bool>
 #define vin vector<int>
-#define v2in vector<vector<int>>
-#define add push_back
+#define v2n vector<vector<int>>
+#define p push_back
 class Solution {
-private:
-    int time = 1;
-    void dfs(int node ,int parent, vib &visited, int tin[], int low[], vin adj[], 
-             v2in &bridges)    {
-        visited[node] = 1;
-        tin[node] = low[node] = time++;
+private:    
+    int time = 0;
+    void dfs(int node, int parent, vin &visi, vin adj[], int tin[], int low[], v2n &bridges)
+    {
+        visi[node] = 1;
+        tin[node] = low[node] = ++time;
+        
+
         for(auto it : adj[node])
         {
             if(it == parent) continue;
-            if(!visited[it])
+            if(!visi[it])
             {
-                dfs(it, node, visited, tin ,low, adj, bridges);
-                low[node] = min(low[node], low[it]);
-                if(low[it] > tin[node]) 
+                dfs(it, node, visi, adj, tin, low, bridges);
+                low[node] = min(low[it], low[node]);
+                if(tin[node] < low[it])
                 {
-                    bridges.add({it, node});
+                    bridges.p({it, node});
                 }
-
             }
             else
             {
@@ -32,17 +32,18 @@ public:
     vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {
         
         vin adj[n];
+
         for(auto it : connections)
         {
-            adj[it[0]].add(it[1]);
-            adj[it[1]].add(it[0]);
+            adj[it[0]].p(it[1]);
+            adj[it[1]].p(it[0]);
         }
-
-        vib visited(n, 0);
-        int tin[n], low[n];
-        v2in bridges;
-        dfs(0, -1, visited, tin, low, adj, bridges);
+        v2n bridges;
+        vin visi(n, 0);
+        int tin[n];
+        int low[n];
+        dfs(0, -1, visi, adj,tin, low, bridges);
         return bridges;
-    
+
     }
 };
