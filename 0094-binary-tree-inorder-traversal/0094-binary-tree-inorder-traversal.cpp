@@ -9,22 +9,31 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
- #define vin vector<int>
- #define p push_back;
 class Solution {
-private:
-    void inorderTraversal(TreeNode* root, vin &res)
-    {
-        if(!root) return;
-        inorderTraversal(root->left, res);
-        res.push_back(root->val);
-        inorderTraversal(root->right,res);
-
-    }
 public:
     vector<int> inorderTraversal(TreeNode* root) {
-        vin res;
-        inorderTraversal(root, res);
-        return res;
+        
+        //iterative way
+        vector<int>ans;
+        stack<TreeNode*>st;
+        while(true)
+        {
+            if(root)
+            {
+                st.push(root);
+                root = root->left;
+            }
+            else
+            {
+                if(st.empty()) break;
+                root = st.top();
+                st.pop();
+                ans.push_back(root->val);
+                root = root->right;
+            }
+
+        }
+
+        return ans;
     }
 };
