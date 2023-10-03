@@ -25,7 +25,7 @@ public:
             for(int i=0; i<size; i++)
             {
                 auto node = q.front().first;
-                long long int curr_idx = q.front().second - min;
+                int64_t curr_idx = q.front().second - min;
                 q.pop();
                 if(i == 0) first = curr_idx;
                 if(i == size-1) last = curr_idx;
