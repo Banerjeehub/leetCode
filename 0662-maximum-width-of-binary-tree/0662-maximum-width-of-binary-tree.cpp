@@ -19,7 +19,7 @@ public:
         while(!q.empty())
         {
             int size = q.size();
-            int min = q.front().second;
+            long long int min = q.front().second;
            
             int first,last;
             for(int i=0; i<size; i++)
