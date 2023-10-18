@@ -1,4 +1,13 @@
 class Solution {
+    void topologicalSort(int person, vector<vector<int>>& graph, vector<bool>& visited, vector<int>& topologicalOrder) {
+    visited[person] = true;
+    for (int neighbor : graph[person]) {
+        if (!visited[neighbor]) {
+            topologicalSort(neighbor, graph, visited, topologicalOrder);
+        }
+    }
+    topologicalOrder.push_back(person);
+}
 public:
     vector<int> loudAndRich(vector<vector<int>>& richer, vector<int>& quiet) {
     int n = quiet.size();
@@ -30,16 +39,6 @@ public:
     }
 
     return answer;
-}
-
-void topologicalSort(int person, vector<vector<int>>& graph, vector<bool>& visited, vector<int>& topologicalOrder) {
-    visited[person] = true;
-    for (int neighbor : graph[person]) {
-        if (!visited[neighbor]) {
-            topologicalSort(neighbor, graph, visited, topologicalOrder);
-        }
-    }
-    topologicalOrder.push_back(person);
 }
 
 };
