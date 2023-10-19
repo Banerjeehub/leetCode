@@ -1,32 +1,50 @@
 class Solution {
 public:
     bool backspaceCompare(string s, string t) {
-        string a, b;
+        int i = s.size() - 1, j = t.size() - 1;
+        int skipS = 0, skipT = 0;
 
-        for(int i=0;i<s.size(); i++)
-        {
-            if(s[i] != '#')
-            {
-                a += s[i];
+        while (i >= 0 || j >= 0) {
+            // Find the next valid character in s
+            while (i >= 0) {
+                if (s[i] == '#') {
+                    skipS++;
+                    i--;
+                } else if (skipS > 0) {
+                    skipS--;
+                    i--;
+                } else {
+                    break;
+                }
             }
-            else if(s[i] == '#' && !a.empty())
-            {
-                a.pop_back();
+
+            // Find the next valid character in t
+            while (j >= 0) {
+                if (t[j] == '#') {
+                    skipT++;
+                    j--;
+                } else if (skipT > 0) {
+                    skipT--;
+                    j--;
+                } else {
+                    break;
+                }
             }
-        }
-        for(int i=0;i<t.size(); i++)
-        {
-            if(t[i] != '#')
-            {
-                b += t[i];
+
+            // Compare the valid characters in s and t
+            if (i >= 0 && j >= 0 && s[i] != t[j]) {
+                return false;
             }
-            else if(t[i] == '#' && !b.empty())
-            {
-                b.pop_back();
+
+            // If one string is exhausted but the other isn't, they can't be equal
+            if ((i >= 0) != (j >= 0)) {
+                return false;
             }
+
+            i--;
+            j--;
         }
 
-        if(a == b) return true;
-        return false;
+        return true;
     }
 };
