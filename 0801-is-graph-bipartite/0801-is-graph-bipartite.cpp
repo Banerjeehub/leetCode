@@ -1,40 +1,47 @@
 class Solution {
 private:
-    bool checkForColor(int start, vector<vector<int>>& graph, vector<int>&color)
+    bool helper(vector<vector<int>>&graph, vector<int>&color, int start)
     {
         queue<int>q;
         q.push(start);
         color[start] = 0;
 
+
         while(!q.empty())
         {
-            int node = q.front();
+            auto top = q.front();
             q.pop();
 
-            for(auto it : graph[node])
+
+            for(auto it : graph[top])
             {
                 if(color[it] == -1)
                 {
-                    color[it] = !color[node];
+                    color[it] = ! color[top];
                     q.push(it);
                 }
-                else if(color[it] == color[node]) return false;
+                else if(color[it] == color[top]) return false;
             }
+
+
+            
         }
         return true;
     }
 public:
     bool isBipartite(vector<vector<int>>& graph) {
-        int V = graph.size();
-        vector<int>color(V, -1);
+        
+        int v = graph.size();
+        vector<int>color(v, -1);
 
-        for(int i=0; i<V; i++)
+        for(int i=0; i<v; i++)
         {
             if(color[i] == -1)
             {
-                if(!checkForColor(i, graph, color)) return false;
+                if(!(helper(graph, color, i))) return false;
             }
         }
+
         return true;
     }
 };
