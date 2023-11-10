@@ -1,23 +1,31 @@
 class Solution {
-public:
-    int minDistance(string word1, string word2) {
-        int n = word1.size(), m = word2.size();
-        return n + m - 2 * lcs(word1, word2, n, m); 
-    }
-
 private:
-    int lcs(string& s1, string& s2, int& n, int& m) {
-        vector<int> prev(m + 1, 0);
-        vector<int> curr(m + 1, 0);
+    int longestCommonSubsequence(string &s, string &t, int &n, int &m)
+    {
+        // int n = s.size();
+        // int m = t.size();
 
-        for (int i = 1; i <= n; i++) {
-            for (int j = 1; j <= m; j++) {
-                if (s1[i-1] == s2[j-1]) curr[j] = 1 + prev[j-1];
-                else curr[j] = max(prev[j], curr[j-1]);
+        vector<int>prev(m+1, 0);
+        vector<int>curr(m+1, 0);
+
+        for(int i=1; i<=n; i++)
+        {
+            for(int j=1; j<=m; j++)
+            {
+                if(s[i-1] == t[j-1]) curr[j] = 1 + prev[j-1];
+                else curr[j] = max(curr[j-1], prev[j]);
             }
-            prev = curr;
+            swap(prev, curr);
         }
-
         return prev[m];
+    }
+public:
+    int minDistance(string word1, string word2) 
+    {
+        
+        int n = word1.size();
+        int m = word2.size();
+        return n+m - 2*longestCommonSubsequence(word1, word2, n, m);
+
     }
 };
