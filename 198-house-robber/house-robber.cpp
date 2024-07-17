@@ -18,16 +18,16 @@ public:
         vector<int> dp(n, 0);
         
         // Base cases
-        int prev2 = nums[0];
-        int prev1 = max(nums[0], nums[1]);
+        int prev1 = nums[0];
+        int prev2 = max(nums[0], nums[1]);
         
         // Fill the dp array
         for (int i = 2; i < n; i++) {
-            int curr = max(nums[i] + prev2, prev1);
-            prev2 = prev1;
-            prev1 = curr;
+            int curr = max(nums[i] + prev1, prev2);
+            prev1 = prev2;
+            prev2 = curr;
         }
         
-        return prev1;
+        return prev2;
     }
 };
