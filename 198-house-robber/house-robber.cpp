@@ -10,7 +10,7 @@ public:
 
         return dp[index] = max(pick, notPick);
     }
-int rob(vector<int>& nums) {
+    int rob(vector<int>& nums) {
         int n = nums.size();
         if (n == 0) return 0;
         if (n == 1) return nums[0];
@@ -18,16 +18,16 @@ int rob(vector<int>& nums) {
         vector<int> dp(n, 0);
         
         // Base cases
-        dp[0] = nums[0];
-        dp[1] = max(nums[0], nums[1]);
+        int prev2 = nums[0];
+        int prev1 = max(nums[0], nums[1]);
         
         // Fill the dp array
         for (int i = 2; i < n; i++) {
-            int pick = nums[i] + dp[i - 2];
-            int notPick = dp[i - 1];
-            dp[i] = max(pick, notPick);
+            int curr = max(nums[i] + prev2, prev1);
+            prev2 = prev1;
+            prev1 = curr;
         }
         
-        return dp[n - 1];
+        return prev1;
     }
 };
