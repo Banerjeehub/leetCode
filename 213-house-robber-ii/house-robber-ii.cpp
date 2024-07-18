@@ -23,7 +23,7 @@ public:
         }
 
 
-        return max(f(index-2, first, dp1), f(index-2, second, dp2));
+        return max(f(first.size()-1, first, dp1), f(second.size()-1, second, dp2));
 
     }
 };
