@@ -1,14 +1,21 @@
 class Solution {
 public:
-    int f(int i, vector<int>&nums, vector<int>&dp)
+    int f(vector<int>&nums, vector<int>&dp)
     {
-        if(i == 0) return nums[i];
-        if(i < 0) return 0;
-        if(dp[i] != -1) return dp[i];
-        int take = nums[i] + f(i-2, nums,dp);
-        int notTake = f(i-1, nums, dp);
+        int n = nums.size();
+        if (n == 1) return nums[0];
+        dp[0] = nums[0];
+        dp[1] = max(nums[0], nums[1]);
 
-        return dp[i] = max(take, notTake);
+        for(int i=2; i<nums.size(); i++)
+        {
+            int take = nums[i] + dp[i-2];
+            int notTake = dp[i-1];
+
+            dp[i] = max(take, notTake);
+        }
+
+        return dp[nums.size()-1];
     }
     int rob(vector<int>& nums) {
         if(nums.size() == 1) return nums[0];
@@ -23,6 +30,6 @@ public:
         int m = nums1.size();
         int n = nums2.size();
         vector<int>dp1(m, -1), dp2(n, -1);
-        return max(f(m-1,nums1, dp1), f(n-1, nums2, dp2));
+        return max(f(nums1, dp1), f(nums2, dp2));
     }
 };
