@@ -1,21 +1,18 @@
 class Solution {
 public:
+    int f(int i, vector<int>&dp)
+    {
+        if(i == 0) return 1;
+        if(i < 0) return 0;
+        if(dp[i] != -1) return dp[i];
+        int oneStep = f(i-1,dp);
+        int twoStep = f(i-2, dp);
+
+        return dp[i] = oneStep + twoStep;
+    }
     int climbStairs(int n) {
         
-        if(n <= 2) return n;
-
-        // vector<int>dp(n);
-        // dp[0] = 1;
-        // dp[1] = 2;
-        int prev1(1), prev2(2);
-
-        for(int i=2; i<n; i++)
-        {
-            int curr = prev1 + prev2;
-            prev1 = prev2;
-            prev2 = curr;
-        }
-
-        return prev2;
+        vector<int>dp(n+1, -1);
+        return f(n, dp);
     }
 };
