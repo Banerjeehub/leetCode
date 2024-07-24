@@ -4,13 +4,16 @@ public:
         int n = nums.size();
         long long totalSum = 0;
 
-        for (int i = 0; i < n; ++i) {
-            int minVal = nums[i];
-            int maxVal = nums[i];
-            for (int j = i; j < n; ++j) {
-                minVal = min(minVal, nums[j]);
-                maxVal = max(maxVal, nums[j]);
-                totalSum += (maxVal - minVal);
+        for(int i=0; i<n; i++)
+        {
+            int mini = nums[i];
+            int maxi = nums[i];
+
+            for(int j=i; j<n; j++)
+            {
+                mini = min(mini, nums[j]);
+                maxi = max(maxi, nums[j]);
+                totalSum += (maxi - mini);
             }
         }
 
