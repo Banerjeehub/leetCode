@@ -3,22 +3,35 @@ public:
     int minimumTotal(vector<vector<int>>& triangle) {
         int n = triangle.size();
         vector<vector<int>>dp(triangle.size(), vector<int>(triangle.size(), 0));
-        
-        for(int i=0; i<triangle.size(); i++) 
-            dp[triangle.size()-1][i] = triangle[triangle.size()-1][i];
 
-        for(int i=n-2; i>=0; i--)
+        dp[0][0] = triangle[0][0];
+
+        for(int row=1; row<n; row++)
         {
-            for(int j=i; j>=0; j--)
+            for(int col=0; col<=row; col++)
             {
-                int d = triangle[i][j] + dp[i+1][j];
-                int dg = triangle[i][j] + dp[i+1][j+1];
-
-                dp[i][j] = min(d, dg);
+                if(col == 0)
+                {
+                    dp[row][col] = triangle[row][col] + dp[row-1][col];
+                }
+                else if(col == row)
+                {
+                    dp[row][col] = triangle[row][col] + dp[row-1][col-1];
+                }
+                else
+                {
+                    dp[row][col] = triangle[row][col] + min(dp[row-1][col], dp[row-1][col-1]);
+                }
             }
         }
 
-        return dp[0][0];
+        int ans = INT_MAX;
+        for(int i=0; i<n; i++)
+        {
+            ans = min(ans, dp[n-1][i]);
+        }
+
+        return ans;
 
     }
 };
