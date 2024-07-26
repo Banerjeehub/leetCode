@@ -14,8 +14,6 @@ public:
         int t1 = text1.size();
         int t2 = text2.size();
         vector<vector<int>>dp(t1+1, vector<int>(t2+1, 0));
-        //return f(t1-1, t2-1, text1, text2, dp);
-
         for(int i=1; i<=t1; i++)
         {
             for(int j=1; j<=t2; j++)
