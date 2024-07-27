@@ -16,28 +16,27 @@ public:
         return ans;
     }
 
-    long long f(int idx, int n, vector<vector<int>>& rides, vector<long long>& dp) {
-        if (idx >= n) return 0;
-        if (dp[idx] != -1) return dp[idx];
-
-        // Option 1: Skip the current ride
-        long long notPick = f(idx + 1, n, rides, dp);
-
-        // Option 2: Take the current ride
-        int next = findNext(rides, idx + 1, rides[idx][1]);
-        long long pick = rides[idx][1] - rides[idx][0] + rides[idx][2];
-        if (next != -1) {
-            pick += f(next, n, rides, dp);
-        }
-
-        // Memoize the result and return the maximum of both options
-        return dp[idx] = max(pick, notPick);
-    }
-
     long long maxTaxiEarnings(int N, vector<vector<int>>& rides) {
         sort(rides.begin(), rides.end());
         int n = rides.size();
-        vector<long long> dp(n, -1);
-        return f(0, n, rides, dp);
+        vector<long long> dp(n + 1, 0); // DP array initialized with 0, size n+1 for easier boundary management
+
+        // Iterate from the last ride to the first ride
+        for (int idx = n - 1; idx >= 0; --idx) {
+            // Option 1: Skip the current ride
+            long long notPick = dp[idx + 1];
+
+            // Option 2: Take the current ride
+            int next = findNext(rides, idx + 1, rides[idx][1]);
+            long long pick = rides[idx][1] - rides[idx][0] + rides[idx][2];
+            if (next != -1) {
+                pick += dp[next];
+            }
+
+            // Store the maximum of both options
+            dp[idx] = max(pick, notPick);
+        }
+
+        return dp[0]; // The result is the maximum earnings starting from the first ride
     }
 };
