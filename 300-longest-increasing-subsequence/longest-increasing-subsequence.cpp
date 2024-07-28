@@ -1,19 +1,19 @@
 class Solution {
 public:
-    int lengthOfLIS(vector<int>& nums) {
-         if (nums.empty()) return 0;
-    
-    vector<int> tails;
-    
-    for (int num : nums) {
-        auto it = lower_bound(tails.begin(), tails.end(), num);
-        if (it == tails.end()) {
-            tails.push_back(num);
-        } else {
-            *it = num;
-        }
+    int f(int idx, int prev,int n,  vector<int>&arr, vector<vector<int>>&dp)
+    {
+        if(idx == n) return 0;
+        if(dp[idx][prev+1] != -1) return dp[idx][prev+1];
+        int notTake = f(idx+1, prev,n, arr, dp);
+        int take = INT_MIN;
+        if(prev == -1 || arr[prev] < arr[idx]) take = 1 + f(idx+1, idx, n, arr, dp);
+
+        return dp[idx][prev+1] =  max(take, notTake);
     }
-    
-    return tails.size();
+    int lengthOfLIS(vector<int>& nums) {
+        
+        int n = nums.size();
+        vector<vector<int>>dp(n, vector<int>(n+1, -1));
+        return f(0, -1, n, nums, dp);
     }
 };
