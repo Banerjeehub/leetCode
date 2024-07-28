@@ -11,9 +11,20 @@ public:
         return dp[idx][prev+1] =  max(take, notTake);
     }
     int lengthOfLIS(vector<int>& nums) {
-        
         int n = nums.size();
-        vector<vector<int>>dp(n, vector<int>(n+1, -1));
-        return f(0, -1, n, nums, dp);
+        vector<vector<int>> dp(n+1, vector<int>(n+1, 0)); // dp[i][j] means the LIS from index i with the previous index being j
+
+        for (int idx = n-1; idx >= 0; idx--) {
+            for (int prev = idx-1; prev >= -1; prev--) {
+                int notTake = dp[idx+1][prev+1]; // when not taking the current element
+                int take = 0;
+                if (prev == -1 || nums[idx] > nums[prev]) {
+                    take = 1 + dp[idx+1][idx+1]; // when taking the current element
+                }
+                dp[idx][prev+1] = max(take, notTake);
+            }
+        }
+
+        return dp[0][0]; // LIS length starting from the first index
     }
 };
