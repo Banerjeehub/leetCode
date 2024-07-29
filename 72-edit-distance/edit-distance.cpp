@@ -16,19 +16,22 @@ public:
         int m = s2.size();
         //return f(i-1, j-1,s1, s2);
         vector<vector<int>>dp(n+1, vector<int>(m+1, 0));
-        for(int i=0; i<=n; i++) dp[i][0] = i;
-        for(int j=0; j<=m; j++) dp[0][j] = j;
+        vector<int>prev(m+1, 0), curr(m+1, 0);
+        for(int i=0; i<=m; i++) prev[i] = i;
+        
 
         for(int i=1; i<=n; i++)
         {
+            curr[0] = i;
             for(int j=1; j<=m; j++)
             {
                 if(s1[i-1] == s2[j-1])
-                    dp[i][j] = dp[i-1][j-1];
+                    curr[j] = prev[j-1];
 
-                else dp[i][j] = 1 + min(dp[i-1][j], min(dp[i][j-1], dp[i-1][j-1]));
+                else curr[j] = 1 + min(prev[j], min(curr[j-1], prev[j-1]));
             }
+            prev = curr;
         }
-        return dp[n][m];
+        return prev[m];
     }
 };
