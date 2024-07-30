@@ -10,21 +10,23 @@
  */
 class Solution {
 public:
-    ListNode* reverseList(ListNode* head) {
-        
-        ListNode* prev = nullptr;
-        ListNode* curr = head;
-        ListNode* forw = nullptr;
-
-        while(curr)
+    void rev(ListNode* &head, ListNode* curr, ListNode* prev)
+    {
+        if(curr == nullptr)
         {
-            forw = curr->next;
-            curr->next = prev;
-            prev = curr;
-            curr = forw;
+            head = prev;
+            return;
         }
 
-        return prev;
+        ListNode* forw = curr -> next;
+        curr->next = prev;
+        
+        rev(head, forw, curr);
+    }
+    ListNode* reverseList(ListNode* head) {
+        
+        rev(head, head, nullptr);
+        return head;
         
     }    
 };
