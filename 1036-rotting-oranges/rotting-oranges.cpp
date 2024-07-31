@@ -1,12 +1,9 @@
 class Solution {
 public:
-    int orangesRotting(vector<vector<int>>& grid) {
-
+    void getCounts(vector<vector<int>>& grid, vector<vector<int>>& visited,
+                   int &freshCount, queue<pair<pair<int, int>, int>>& q) {
         int n = grid.size();
         int m = grid[0].size();
-        int freshCount = 0;
-        queue<pair<pair<int, int>, int>>q;
-        vector<vector<int>> visited(n, vector<int>(m, 0));
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
@@ -21,6 +18,9 @@ public:
                 }
             }
         }
+    }
+    int BFS(queue<pair<pair<int, int>, int>>& q, int n, int m, int freshCount,
+            vector<vector<int>>& visited, vector<vector<int>>& grid) {
         int result = 0;
         int count = 0;
         int dr[] = {-1, 1, 0, 0};
@@ -48,6 +48,19 @@ public:
 
         if (count != freshCount)
             return -1;
+        return result;
+    }
+    int orangesRotting(vector<vector<int>>& grid) {
+
+        int n = grid.size();
+        int m = grid[0].size();
+        int freshCount = 0;
+        queue<pair<pair<int, int>, int>> q;
+        vector<vector<int>> visited(n, vector<int>(m, 0));
+
+
+        getCounts(grid, visited, freshCount, q);
+        int result = BFS(q, n, m, freshCount, visited, grid);
         return result;
     }
 };
