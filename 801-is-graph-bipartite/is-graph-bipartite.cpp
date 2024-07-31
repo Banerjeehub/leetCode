@@ -1,5 +1,16 @@
 class Solution {
 public:
+    bool dfs(int node, vector<int>& color, vector<vector<int>>& graph) {
+    for (auto it : graph[node]) {
+        if (color[it] == -1) {  // If the neighbor has not been colored
+            color[it] = 1 - color[node];  // Color it with the opposite color
+            if (!dfs(it, color, graph)) return false;  // If the subgraph is not bipartite
+        } else if (color[it] == color[node]) {
+            return false;  // If a neighboring node has the same color, it's not bipartite
+        }
+    }
+    return true;
+}
     bool bg(int start,  vector<int>&color, vector<vector<int>>& graph)
     {
         queue<int>q;
@@ -32,7 +43,7 @@ public:
         {
             if(color[i] == -1)
             {
-                if(!bg(i, color, graph)) return false;
+                if(!dfs(i, color, graph)) return false;
 
             }
         }
