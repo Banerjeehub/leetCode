@@ -1,29 +1,44 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
 class Solution {
 public:
-
-    TreeNode* f(int inStart, int inEnd, int preStart, int preEnd, map<int, int>&mpp, vector<int>& inorder, vector<int>& preorder)
+    TreeNode* f(int inStart, int inEnd, int preStart, int preEnd, vector<int>&inorder, vector<int>&preorder, map<int, int>&mpp)
     {
-        if(preStart > preEnd || inStart > inEnd) return nullptr;
-
+        if(inStart > inEnd || preStart > preEnd) return nullptr;
         TreeNode* root = new TreeNode(preorder[preStart]);
-        int leftEle = mpp[root->val] - inStart;
+
         int inRoot = mpp[root->val];
+        int eleLeft = inRoot - inStart;
 
-        root->left = f(inStart, inRoot-1, preStart+1, preStart+leftEle, mpp, inorder, preorder);
-        root->right = f(inRoot+1, inEnd, preStart+leftEle+1, preEnd, mpp, inorder, preorder);
 
+
+        root->left = f(inStart, inRoot - 1 , preStart+1, preStart+eleLeft, inorder, preorder, mpp);
+        root->right = f(inRoot+1, inEnd, preStart+eleLeft+1, preEnd, inorder, preorder, mpp);
         return root;
-        
     }
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        
         map<int, int>mpp;
 
         for(int i=0; i<inorder.size(); i++)
         {
             mpp[inorder[i]] = i;
         }
+        int inStart = 0;
+        int preStart = 0;
+        int inEnd = inorder.size()-1;
+        int preEnd = preorder.size()-1;
 
-        TreeNode* root = f(0, inorder.size()-1, 0, preorder.size()-1, mpp, inorder, preorder);
+        TreeNode* root = f(inStart, inEnd, preStart, preEnd, inorder, preorder, mpp);
         return root;
     }
 };
