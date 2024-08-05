@@ -1,6 +1,6 @@
 class Solution {
 public:
-    void helper(int i, vector<int>&nums, vector<vector<int>>&ans)
+    void f(int i, vector<int>&nums, vector<vector<int>>&ans)
     {
         if(i == nums.size())
         {
@@ -8,18 +8,16 @@ public:
             return;
         }
 
-        for(int j=i; j<nums.size(); j++)
+        for(int idx=i; idx<nums.size(); idx++)
         {
-            swap(nums[i], nums[j]);
-            helper(i+1, nums, ans);
-            swap(nums[i], nums[j]);
+            swap(nums[idx], nums[i]);
+            f(i+1, nums, ans);
+            swap(nums[idx], nums[i]);
         }
-
     }
     vector<vector<int>> permute(vector<int>& nums) {
-        
         vector<vector<int>>ans;
-        helper(0, nums, ans);
+        f(0, nums, ans);
         return ans;
     }
 };
