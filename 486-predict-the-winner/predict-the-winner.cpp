@@ -1,17 +1,23 @@
 class Solution {
 public:
-    int check(vector<int>& nums, int start, int end, vector<vector<int>>& dp) {
-        if (start == end)
-            return nums[start];
-        if (dp[start][end] != -1)
-            return dp[start][end];
-        int a = nums[start] - check(nums, start + 1, end, dp);
-        int b = nums[end] - check(nums, start, end - 1, dp);
-        return dp[start][end] = max(a, b);
+    int dfs(int i , int j ,vector<int>& nums , int turn){
+        if(i == nums.size() || j == -1) return 0;
+        if(i > j) return 0;
+        int val;
+        if(turn == 0){
+            val =  max(nums[i] + dfs(i + 1 , j , nums , 1), 
+                       nums[j] + dfs(i , j - 1 , nums , 1));
+        }
+        else{
+            val =  min(-nums[i] + dfs(i + 1 , j , nums , 0),
+                       -nums[j] + dfs(i , j - 1 , nums , 0));
+        }
+
+        return val;
     }
     bool predictTheWinner(vector<int>& nums) {
         int n = nums.size();
-        vector<vector<int>> dp(n, vector<int>(n, -1));
-        return check(nums, 0, nums.size() - 1, dp) >= 0;
+        int val = dfs(0 , n - 1 , nums , 0);
+        return val >= 0;
     }
 };
