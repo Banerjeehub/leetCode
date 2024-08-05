@@ -1,27 +1,19 @@
 class Solution {
 public:
-    long long helper(int ind, vector<int>& nums, int x, int parity, vector<vector<long long>>& dp) {
-// IF WE GO BEYOND ARRAY THEN RETURN 
-        if (ind == nums.size())
-            return 0;
+    long long f(int i, vector<int>&nums, int x, int parity, vector<vector<long long>>&dp)
+    {
+        if(i == nums.size()) return 0;
+        if(dp[i][parity] != -1) return dp[i][parity];
+        long long notTake = f(i+1, nums, x, parity, dp);
+        long long take = nums[i] + f(i+1, nums, x, nums[i] % 2, dp);
+        if(nums[i] % 2 != parity) take = take - x;
 
-        if (dp[ind][parity] != -1)
-            return dp[ind][parity];
-
-        long long take = nums[ind] + helper(ind + 1, nums, x, nums[ind] % 2, dp);
-// IF TAKEN CHECK IF IT HAS DIFFERENT PARITY OF NOT
-        if (nums[ind] % 2 != parity)
-            take -= x;
-
-        long long notTake = helper(ind + 1, nums, x, parity, dp);
-
-        return dp[ind][parity] = max(take, notTake);
+        return dp[i][parity] =  max(take, notTake);
+        
     }
-
     long long maxScore(vector<int>& nums, int x) {
-        vector<vector<long long>> dp(nums.size(), vector<long long>(2, -1));
-        return helper(0, nums, x, nums[0] % 2, dp);
+        int n = nums.size();
+        vector<vector<long long>>dp(n, vector<long long>(2, -1));
+        return nums[0] + f(1, nums, x, nums[0] % 2, dp);
     }
 };
-
-// PlZ UPVOTE IF YOU LIKE IT
