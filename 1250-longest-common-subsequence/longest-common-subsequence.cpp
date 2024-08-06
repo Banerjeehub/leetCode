@@ -4,6 +4,7 @@ public:
         int t1 = text1.size();
         int t2 = text2.size();
         vector<vector<int>>dp(t1+1, vector<int>(t2+1, 0));
+        vector<int>prev(t2+1, 0), curr(t2 + 1, 0);
 
         for(int i=1; i<=t1; i++)
         {
@@ -11,16 +12,17 @@ public:
             {
                 if(text1[i-1] == text2[j-1])
                 {
-                    dp[i][j] = 1 + dp[i-1][j-1];
+                   curr[j] = 1 + prev[j-1];
                 }
                 else
                 {
-                    dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+                    curr[j] = max(prev[j], curr[j-1]);
                 }
             }
+            prev = curr;
         }
 
-        return dp[t1][t2];
+        return prev[t2];
 
     }
 };
