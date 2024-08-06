@@ -2,10 +2,13 @@ class Solution {
 public:
     int binarySearch(int low, int high, vector<int>&nums, int target)
     {
-        if (low > high) {
-            return -1; // Target not found
+        if(low > high)
+        {
+            
+            return -1;
+
         }
-        int mid = low + (high - low) / 2;
+        int mid = (low + high)/2;
 
         if(nums[mid] == target) return mid;
         else if(nums[mid] > target)
