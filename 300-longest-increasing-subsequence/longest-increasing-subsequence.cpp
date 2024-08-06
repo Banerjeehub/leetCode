@@ -1,44 +1,22 @@
 class Solution {
 public:
+    int f(int idx, int prev, vector<int>&nums, vector<vector<int>>&dp)
+    {
+        if(idx == nums.size()) return 0;
+
+        if(dp[idx][prev+1] != -1) return dp[idx][prev+1];
+        int notTake = f(idx+1, prev, nums, dp);
+        int take = 0;
+        if(prev == -1 || nums[idx] > nums[prev])
+        {
+            take = 1 + f(idx+1, idx, nums, dp);
+        }
+        return dp[idx][prev+1] = max(take, notTake);
+    }
     int lengthOfLIS(vector<int>& nums) {
         int n = nums.size();
-        vector<int>dp(n, 1), hash(n);
-        int maxi = 1;
-        int lastIdx = 0;
-        for(int i=0; i<n; i++)
-        {
-            hash[i] = i;
-            for(int j=0; j<i; j++)
-            {
-                if(nums[i] > nums[j] && (1+dp[j] > dp[i]))
-                {
-                    dp[i] = 1 + dp[j];
-                    hash[i] = j;
+        vector<vector<int>>dp(n, vector<int>(n+1, -1));
 
-                }
-                if(maxi < dp[i])
-                {
-                    maxi = dp[i];
-                    lastIdx = i;
-                }
-            }
-        }
-
-        vector<int>li;
-        li.push_back(nums[lastIdx]);
-        while(hash[lastIdx] != lastIdx)
-        {
-            lastIdx = hash[lastIdx];
-            li.push_back(nums[lastIdx]);
-        }
-
-        reverse(li.begin(), li.end());
-
-        for(auto it : li) cout << it << " ";
-        cout << endl;
-
-
-
-        return maxi;
+        return f(0, -1, nums, dp);
     }
 };
