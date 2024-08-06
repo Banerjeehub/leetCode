@@ -15,7 +15,7 @@ public:
 
         for(int i=1; i<n; i++)
         {
-            for(int sum=0; sum <= target; sum++)
+            for(int sum=target; sum>=0; sum--)
             {
                 int notTake = prev[sum];
                 int take = 0;
@@ -24,10 +24,10 @@ public:
                     take = prev[sum-nums[i]];
                 }
 
-                curr[sum] = take || notTake;
+                prev[sum] = take || notTake;
 
             }
-            prev = curr;
+            
         }
 
         return prev[target];
