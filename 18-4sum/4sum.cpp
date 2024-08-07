@@ -1,45 +1,37 @@
 class Solution {
 public:
     vector<vector<int>> fourSum(vector<int>& nums, int target) {
-        
-        sort(nums.begin(), nums.end());
-        int size = nums.size();
-
+        //if(nums.size() == 1) return 
+        vector<vector<int>>ans;
+         if (nums.size() < 4) return ans; 
         set<vector<int>>st;
-        vector<vector<int>>output;
-
-        for(int i=0;i<size-3;i++)
+        sort(nums.begin(), nums.end());
+        for(int i=0; i<nums.size()-3; i++)
         {
-            for(int j=i+1;j<size-2; j++)
+            for(int j=i+1; j<nums.size()-2; j++)
             {
-                long long newTarget = (long long)target - (long long)nums[i] - (long long)nums[j];
-                int low = j+1;
-                int high = size-1;
-                
-                while(low < high)
+                int k = j+1;
+                int l = nums.size()-1;
+
+                while(k < l)
                 {
-                    if(nums[low]+nums[high] < newTarget)
+                    long long currSum = static_cast<long long>(nums[i]) + static_cast<long long>(nums[j]) + static_cast<long long>(nums[k]) + static_cast<long long>(nums[l]);
+                    if(currSum == target)
                     {
-                        low++;
+                        st.insert({nums[i] , nums[j] , nums[k] ,nums[l]});
+                        k++;
+                        l--;
                     }
-                    else if(nums[low]+nums[high] > newTarget)
-                    {
-                        high--;
-                    }
-                    else
-                    {
-                        st.insert({nums[i],nums[j],nums[low],nums[high]});
-                        low++;
-                        high--;
-                    }
-                } 
+                    else if(currSum > target) l--;
+                    else k++;
+                }
             }
         }
-        for(auto i:st)
-        {
-            output.push_back(i);
-        }
 
-        return output;
+        for(auto it : st)
+        {
+            ans.push_back(it);
+        }
+        return ans;
     }
 };
