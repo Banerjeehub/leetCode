@@ -2,23 +2,12 @@ class Solution {
 public:
     bool isAnagram(string s, string t) {
         
-        vector<int>count(26, 0);
-
-        for(auto it : s)
-        {
-            count[it - 'a']++;
-        }
-        for(auto it : t)
-        {
-            count[it - 'a']--;
-        }
-
-        for(auto it : count)
-        {
-            if(it != 0) return false;
-        }
-
+        vector<int>hash(26, 0);
+        for(int i=0; i<s.size(); i++) hash[s[i] - 'a']++;
+        for(int i=0; i<t.size(); i++) hash[t[i] - 'a']--;
+        for(int i=0; i<hash.size(); i++) {if(hash[i] > 0 || hash[i] < 0) return false;}
         return true;
+
 
     }
 };
