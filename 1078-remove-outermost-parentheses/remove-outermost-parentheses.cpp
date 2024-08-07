@@ -1,20 +1,21 @@
 class Solution {
 public:
-    string removeOuterParentheses(string S) {
-        string result;
+    string removeOuterParentheses(string s) {
+        
         int openCount = 0;
+        string result = "";
 
-        for (char c : S) {
-            if (c == '(') {
-                if (openCount > 0) {
-                    result += c;  // Only add '(' if it is not an outermost one
-                }
+        for( char it : s)
+        {
+            if(it == '(')
+            {
+                if(openCount > 0) result += it;
                 openCount++;
-            } else {
+            }
+            else
+            {
                 openCount--;
-                if (openCount > 0) {
-                    result += c;  // Only add ')' if it is not an outermost one
-                }
+                if(openCount > 0) result += it;
             }
         }
 
