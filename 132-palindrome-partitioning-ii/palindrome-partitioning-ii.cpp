@@ -27,7 +27,21 @@ public:
         return dp[idx] = minCost;
     }
     int minCut(string s) {
-        vector<int> dp(s.length(), -1);
-        return helper(0, s, dp) - 1;
+        int n = s.size();
+        vector<int> dp(n + 1, 0);
+        dp[n] = 0;
+
+        for (int idx = n - 1; idx >= 0; idx--) {
+            int minCost = INT_MAX;
+            for (int i = idx; i < s.size(); i++) {
+                if (isPalindrome(idx, i, s)) {
+                    int cost = 1 + dp[i + 1]; // Fix the index here
+                    minCost = min(cost, minCost);
+                }
+            }
+            dp[idx] = minCost;
+        }
+
+        return dp[0] - 1; // Subtract 1 to get the correct number of cuts
     }
 };
