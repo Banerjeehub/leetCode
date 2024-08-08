@@ -1,10 +1,11 @@
 class Solution {
 public:
     int getSum(int a, int b) {
-
-        while (b) {
+        
+        while(b)
+        {
             int carry = a & b;
-            a = a ^ b;
+            a = a^b;
             b = carry << 1;
         }
 
