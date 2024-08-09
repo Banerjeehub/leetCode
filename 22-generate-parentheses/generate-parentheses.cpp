@@ -1,6 +1,6 @@
 class Solution {
 public:
-    void f(int open, int close, vector<string>&ans, string s)
+    void f(int open, int close, string s, vector<string>&ans)
     {
         if(open == 0 && close == 0)
         {
@@ -10,16 +10,18 @@ public:
 
         if(open > 0)
         {
-            f(open-1, close, ans, s+"(");
+            f(open-1, close, s+'(', ans);
         }
-        if(close > open) f(open , close-1, ans, s+")");
+        if(open < close)
+        {
+            f(open, close-1, s+')', ans);
+        }
     }
     vector<string> generateParenthesis(int n) {
+        vector<string>ans;
         int open = n;
         int close = n;
-        vector<string>ans;
-        string s="";
-        f(open, close, ans, s);
-        return ans;
+         f(open, close, "", ans);
+         return ans;
     }
 };
