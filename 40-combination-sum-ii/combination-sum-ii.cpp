@@ -1,22 +1,22 @@
 class Solution {
 private:
-    void f(int idx, vector<int>& arr, int target, vector<int>& temp,
-           vector<vector<int>>& ans) {
-        if (target == 0) {
+       void f(int i, vector<int>&arr, int target, vector<int>&temp, vector<vector<int>>&ans)
+    {
+        if(target == 0)
+        {
             ans.push_back(temp);
             return;
         }
-        if (target < 0)
-            return;
+        if(target < 0) return;
 
-        for (int i = idx; i < arr.size(); i++) {
-            if( i > idx && arr[i] == arr[i-1]) continue;
-            temp.push_back(arr[i]);
-            f(i + 1, arr, target - arr[i], temp, ans);
+        for(int idx=i; idx<arr.size(); idx++)
+        {
+            if(i < idx && arr[idx] == arr[idx-1])  continue;
+            temp.push_back(arr[idx]);
+            f(idx+1, arr, target - arr[idx], temp, ans);
             temp.pop_back();
         }
     }
-
 public:
     vector<vector<int>> combinationSum2(vector<int>& arr, int target) {
 
