@@ -1,18 +1,20 @@
 class Solution {
 public:
-    bool isSafe(int row, int col, vector<string>&board, int n)
+    bool isCheck(int row, int col, int n, vector<string>&board)
     {
-        int dc = col;
-        int dr = row;
+        int dr(row), dc(col);
+        // same row
 
-        // current row
         while(dc >= 0)
         {
             if(board[dr][dc] == 'Q') return false;
             dc--;
         }
-        dc = col;
+
         dr = row;
+        dc = col;
+
+        //upper diagonal
 
         while(dr >= 0 && dc >= 0)
         {
@@ -21,10 +23,10 @@ public:
             dc--;
         }
 
+        //lower diagonal
         dr = row;
         dc = col;
-
-        while(dr < n && dc >= 0)
+        while(dc >= 0 && dr < n)
         {
             if(board[dr][dc] == 'Q') return false;
             dr++;
@@ -33,7 +35,7 @@ public:
 
         return true;
     }
-    void solve(int col, int n, vector<string>&board,  vector<vector<string>>&ans)
+    void solve(int col, int n, vector<string>&board, vector<vector<string>>&ans)
     {
         if(col == n)
         {
@@ -43,7 +45,7 @@ public:
 
         for(int row=0; row<n; row++)
         {
-            if(isSafe(row, col, board, n))
+            if(isCheck(row, col, n, board))
             {
                 board[row][col] = 'Q';
                 solve(col+1, n, board, ans);
@@ -58,8 +60,6 @@ public:
         vector<string>board(n, str);
         solve(0, n, board, ans);
         return ans;
-
         
-
     }
 };
