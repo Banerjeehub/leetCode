@@ -8,7 +8,7 @@ public:
             return dp[idx][prev+1];
         }
         int notTake = f(idx+1, prev, nums, dp);
-        int take = 0;
+        int take = INT_MIN;
         if(prev == -1 || nums[idx] > nums[prev])
         {
             take = 1 + f(idx+1, idx, nums, dp);
