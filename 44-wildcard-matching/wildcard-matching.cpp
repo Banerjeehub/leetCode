@@ -1,35 +1,36 @@
 class Solution {
 public:
-    bool f(int i, int j, string& s, string& p, vector<vector<int>>& memo)
+    bool f(int i, int j, string &s, string &p, vector<vector<int>>&dp)
     {
-        if (i < 0 && j < 0) return true;
-        if (i >= 0 && j < 0) return false;
-        if (i < 0 && j >= 0) 
+        if(i < 0 && j < 0) return true;
+        if(i>= 0 && j < 0) return false;
+        if(i < 0 && j>=0)
         {
-            for (int k = 0; k <= j; k++)
+            for(int k=j; k>=0; k--)
             {
-                if (p[k] != '*') return false;
+                if(p[k] != '*') return false;
             }
             return true;
         }
 
-        if (memo[i][j] != -1) return memo[i][j];
+        if(dp[i][j] != -1) return dp[i][j];
 
-        if (s[i] == p[j] || p[j] == '?') 
+        if(s[i] == p[j] || p[j] == '?')
         {
-            return memo[i][j] = f(i - 1, j - 1, s, p, memo);
+            return dp[i][j] = f(i-1, j-1, s, p, dp);
         }
-        else if (p[j] == '*')
+        else if(p[j] == '*')
         {
-            return memo[i][j] = f(i - 1, j, s, p, memo) || f(i, j - 1, s, p, memo);
+            return dp[i][j] = f(i-1, j, s, p, dp) || f(i, j-1, s, p, dp);
         }
-        return memo[i][j] = false;
+
+        return dp[i][j] = false;
     }
-    
     bool isMatch(string s, string p) {
-        int n = s.size();
-        int m = p.size();
-        vector<vector<int>> memo(n, vector<int>(m, -1));
-        return f(n - 1, m - 1, s, p, memo);
+        
+        int ss = s.size();
+        int pp = p.size();
+        vector<vector<int>>dp(ss, vector<int>(pp, -1));
+        return f(ss-1, pp-1, s, p, dp);
     }
 };
