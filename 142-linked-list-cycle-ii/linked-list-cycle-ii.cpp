@@ -8,17 +8,30 @@
  */
 class Solution {
 public:
-    ListNode *detectCycle(ListNode *head) {
-        map<ListNode*, bool>mpp;
+    ListNode* f(ListNode* fast, ListNode* head)
+    {
         ListNode* temp = head;
-        while(temp)
+        while(temp != fast)
         {
-            if(mpp[temp]) return temp;
-            mpp[temp] = true;
-
             temp = temp->next;
+            fast = fast->next;
         }
 
-        return nullptr;
+        return temp;
+    }
+    ListNode *detectCycle(ListNode *head) {
+       
+       ListNode* slow = head;
+       ListNode* fast = head;
+
+       while(fast && fast->next)
+       {
+            slow = slow->next;
+            fast = fast->next->next;
+            if(slow == fast) return f(fast, head);
+       }
+
+       return nullptr;
+
     }
 };
