@@ -42,7 +42,7 @@ public:
         }
 
         prev->next = temp->next;
-        temp->next = NULL;
+        delete temp;
 
         reverse(head, head, nullptr);
         return head;
