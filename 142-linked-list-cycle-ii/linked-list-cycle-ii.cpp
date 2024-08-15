@@ -8,28 +8,17 @@
  */
 class Solution {
 public:
-    ListNode* findStart(ListNode* slow, ListNode* fast)
-    {
-        while(slow != fast)
-        {
-            slow = slow->next;
-            fast = fast->next;
-            if(fast == slow) return slow;
-        }
-        return slow;
-    }
     ListNode *detectCycle(ListNode *head) {
-        
-        ListNode* slow(head);
-        ListNode* fast(head);
-
-        while(fast && fast->next)
+        map<ListNode*, bool>mpp;
+        ListNode* temp = head;
+        while(temp)
         {
-            slow = slow->next;
-            fast = fast->next->next;
-            if(slow==fast) return findStart(head, fast);
+            if(mpp[temp]) return temp;
+            mpp[temp] = true;
+
+            temp = temp->next;
         }
 
-        return NULL;
+        return nullptr;
     }
 };
