@@ -18,7 +18,7 @@ public:
                 low = mid + 1;
             }
         }
-
+        cout << low << endl;
         return arr[low];
     }
 };
