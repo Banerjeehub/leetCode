@@ -13,10 +13,10 @@ class Solution {
 public:
     vector<int> postorderTraversal(TreeNode* root) {
         if(!root) return {};
-        stack<TreeNode*>st1, st2;
         vector<int>ans;
-        st1.push(root);
+        stack<TreeNode*>st1, st2;
 
+        st1.push(root);
         while(!st1.empty())
         {
             auto top = st1.top();
