@@ -11,19 +11,23 @@
 class Solution {
 public:
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        TreeNode* current = root;
         
-        if(!root) return NULL;
-
-
-        if(p->val < root->val && q->val < root->val)
-        {
-            return lowestCommonAncestor(root->left, p, q);
+        while (current) {
+            if (p->val < current->val && q->val < current->val) {
+                // Both nodes are in the left subtree
+                current = current->left;
+            } 
+            else if (p->val > current->val && q->val > current->val) {
+                // Both nodes are in the right subtree
+                current = current->right;
+            } 
+            else {
+                // We have found the split point, i.e., the LCA node
+                return current;
+            }
         }
-        else if(p->val > root->val && q->val > root->val)
-        {
-            return lowestCommonAncestor(root->right, p, q);
-        }
-
-        return root;
+        
+        return nullptr; // This line should not be reached if p and q are guaranteed to be in the tree
     }
 };
