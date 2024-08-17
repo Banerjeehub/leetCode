@@ -1,6 +1,3 @@
-#include <unordered_map>
-#include <stack>
-
 class Solution {
 public:
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
