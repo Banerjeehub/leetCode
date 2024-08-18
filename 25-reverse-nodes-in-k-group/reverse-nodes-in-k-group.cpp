@@ -9,47 +9,46 @@
  * };
  */
 class Solution {
-private:
-    int getSize(ListNode* head) {
-        ListNode* temp = head;
+public:
+    int getSize(ListNode* head)
+    {
         int count = 0;
-
-        while (temp) {
+        ListNode* temp = head;
+        while(temp)
+        {
             count++;
             temp = temp->next;
         }
         return count;
     }
-    ListNode* doTheJob(ListNode* head, int k, int flag, int size) {
-        if (size < k)
-            return head;
+    ListNode* reverse(ListNode* head, int k, bool flag, int size)
+    {
+        if(size < k) return head;
+
         ListNode* prev = NULL;
         ListNode* curr = head;
         ListNode* forw = NULL;
 
-        for (int i = 0; i < k; i++) {
-            if (curr == NULL) {
+        for(int i=0; i<k; i++)
+        {
+            if(curr == NULL)
+            {
                 flag = 0;
                 break;
             }
-
             forw = curr->next;
             curr->next = prev;
             prev = curr;
             curr = forw;
         }
 
-        if (!flag)
-            return prev;
-
-        head->next = doTheJob(curr, k, flag, size - k);
+        if(!flag) return prev;
+        head->next = reverse(curr, k, 1, size-k);
         return prev;
     }
-
-public:
     ListNode* reverseKGroup(ListNode* head, int k) {
+        
         int size = getSize(head);
-        head = doTheJob(head, k, 1, size);
-        return head;
+        return reverse(head, k, 1, size);
     }
 };
