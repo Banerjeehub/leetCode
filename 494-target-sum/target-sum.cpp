@@ -1,38 +1,36 @@
 class Solution {
 public:
-    int f(vector<int>&nums, int k)
-    {
-        int n = nums.size();
-        vector<int>prev(k+1, 0), curr(k+1, 0);
-        if(nums[0] == 0)
-        {
-            prev[0] = curr[0] = 2;
+    int f(int idx, int amount, vector<int>& nums, vector<vector<int>>& dp) {
+        if (idx == 0) {
+            if (amount == 0 && nums[idx] == 0)
+                return 2;
+            if (amount == 0 || nums[idx] == amount)
+                return 1;
+            return 0;
         }
-        else
-        {
-            prev[0] = curr[0] = 1;
-            if(nums[0] <= k) prev[nums[0]] = 1;
+        if (dp[idx][amount] != -1)
+            return dp[idx][amount];
+
+        int notTake = f(idx - 1, amount, nums, dp);
+        int take = 0;
+        if (amount >= nums[idx]) {
+            take = f(idx - 1, amount - nums[idx], nums, dp);
         }
 
-        for(int i=1; i<n; i++)
-        {
-            for(int j=0; j<=k; j++)
-            {
-                int notTake = prev[j];
-                int take = 0;
-                if(nums[i] <= j) take = prev[j - nums[i]];
-
-                curr[j] = take + notTake;
-            }
-            prev = curr;
-        }
-        return prev[k];
+        return dp[idx][amount] = take + notTake;
     }
-    int findTargetSumWays(vector<int>& nums, int target) {
-        
-        int totSum = accumulate(nums.begin(), nums.end(), 0);
-        if(totSum - target < 0 || (totSum - target) % 2 != 0) return 0;
 
-        return f(nums, (totSum - target)/2);
+    int findTargetSumWays(vector<int>& nums, int target) {
+
+        int sum = accumulate(nums.begin(), nums.end(), 0);
+        int n = nums.size();
+
+        int amount = (sum - target) / 2;
+        if ((sum - target)%2 == 1)
+            return 0;
+        if (target > sum)
+            return 0;
+        vector<vector<int>> dp(n, vector<int>(amount + 1, -1));
+        return f(n - 1, amount, nums, dp);
     }
 };
