@@ -31,7 +31,9 @@ public:
     }
     int minCut(string s) {
         vector<int>dp(s.size(), -1);
-        return f(0, s, dp) - 1;
+        f(0, s, dp);
+
+        return dp[0] - 1;
         
     }
 };
