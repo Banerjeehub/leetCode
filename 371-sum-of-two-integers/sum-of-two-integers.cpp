@@ -5,7 +5,7 @@ public:
         while(b)
         {
             int carry = a & b;
-            a = a^b;
+            a = a ^ b;
             b = carry << 1;
         }
 
