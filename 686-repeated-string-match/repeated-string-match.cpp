@@ -3,7 +3,7 @@ public:
     int repeatedStringMatch(string a, string b) {
         int minReps = (b.size() + a.size() - 1) / a.size(); // Ceiling of b.size() / a.size()
         
-        // Create the repeated string with minReps and minReps + 1
+        
         string repeatedA = a;
         for (int i = 1; i < minReps; ++i) {
             repeatedA += a;
