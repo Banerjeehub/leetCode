@@ -2,18 +2,38 @@ class Solution {
 public:
     string removeOccurrences(string s, string part) {
         
-        string temp;
-        for(auto ch : s)
-        {
-            temp.push_back(ch);
+        string res;
+        stack<char>st;
 
-            while(temp.size() >= part.size() &&
-            temp.substr(temp.size() - part.size()) == part)
+        for(auto c : s)
+        {
+            st.push(c);
+
+            if(st.size() >= part.size())
             {
-                temp.erase(temp.size() - part.size());
+                string temp = "";
+                for(int i=0; i<part.size(); i++)
+                {
+                    temp = st.top() + temp;
+                    st.pop();
+                }
+
+                if(temp != part)
+                {
+                    for(auto ch : temp)
+                    {
+                        st.push(ch);
+                    }
+                }
             }
         }
 
-        return temp;
+        while(!st.empty())
+        {
+            res = st.top() + res;
+            st.pop();
+        }
+
+        return res;
     }
 };
