@@ -1,32 +1,36 @@
-#include <iostream>
-#include <vector>
-#include <numeric> // for accumulate
-using namespace std;
-
 class Solution {
 public:
+    bool isPossible(long long mid, int totalTrips,vector<int>& time)
+    {
+        long long ans = 0;
+        for(auto it : time)
+        {
+            ans += (mid / it);
+        }
+        if(ans >= totalTrips)
+        {
+            return true;
+        }
+        return false;
+    }
     long long minimumTime(vector<int>& time, int totalTrips) {
+        
         long long low = 1;
         long long high = (long long)*min_element(time.begin(), time.end()) * totalTrips;
 
-        auto trips_in_time = [&](long long t) {
-            long long trips = 0;
-            for (int t_i : time) {
-                trips += t / t_i;
-                if (trips >= totalTrips) break; // early exit if already enough
+        while(low < high)
+        {
+            long long mid = low + (high - low)/2;
+            if(isPossible(mid, totalTrips, time))
+            {
+                high = mid;
             }
-            return trips;
-        };
-
-        while (low < high) {
-            long long mid = low + (high - low) / 2;
-            if (trips_in_time(mid) >= totalTrips) {
-                high = mid; // try smaller time
-            } else {
-                low = mid + 1; // need more time
-            }
+            else low = mid + 1;
         }
 
         return low;
+
+        
+
     }
 };
