@@ -1,18 +1,18 @@
 class Solution {
 public:
-    int f(int i, vector<int>&dp)
+    int solve(int n, vector<int>&dp)
     {
-        if(i < 0) return 0;
-        if(i == 0) return 1;
-        if(dp[i] != -1) return dp[i];
-        int oneStep = f(i-1, dp);
-        int twoStep = f(i-2, dp);
+        if(n <= 0) return dp[n] = 0;
+        if(n == 1) return dp[n] = 1;
+        if(n ==  2) return dp[n] = 2;
+        if(dp[n] != -1) return dp[n];
 
-        return dp[i] = oneStep + twoStep;
-
+        return dp[n] = solve(n-1, dp) + solve(n-2, dp);
+        
     }
     int climbStairs(int n) {
         vector<int>dp(n+1, -1);
-        return f(n, dp);
+        solve(n, dp);
+        return dp[n];
     }
 };
