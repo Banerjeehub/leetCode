@@ -43,7 +43,7 @@ public:
         {
             if(color[i] == -1)
             {
-                if(!dfs(i, color, graph)) return false;
+                if(!bg(i, color, graph)) return false;
 
             }
         }
