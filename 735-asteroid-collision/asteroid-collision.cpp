@@ -1,27 +1,27 @@
 class Solution {
 public:
-    vector<int> asteroidCollision(vector<int>& as) {
-        vector<int> res;
+    vector<int> asteroidCollision(vector<int>& asteroids) {
 
-        for (int a : as) {
+        vector<int> ans;
+
+        for (int a : asteroids) {
             bool destroyed = false;
 
-            while (!res.empty() && res.back() > 0 && a < 0) {
-                if (res.back() < -a) {
-                    res.pop_back(); // previous asteroid destroyed
+            while (!ans.empty() && ans.back() > 0 && a < 0) {
+
+                if (ans.back() < abs(a)) {
+                    ans.pop_back();
                     continue;
-                } else if (res.back() == -a) {
-                    res.pop_back(); // both destroy each other
+                } else if (ans.back() == abs(a)) {
+                    ans.pop_back();
                 }
                 destroyed = true;
                 break;
             }
-
             if (!destroyed) {
-                res.push_back(a);
+                ans.push_back(a);
             }
         }
-
-        return res;
+        return ans;
     }
 };
