@@ -1,53 +1,41 @@
 class Solution {
 public:
-    bool dfs(int node, vector<int>& color, vector<vector<int>>& graph) {
-    for (auto it : graph[node]) {
-        if (color[it] == -1) {  // If the neighbor has not been colored
-            color[it] = 1 - color[node];  // Color it with the opposite color
-            if (!dfs(it, color, graph)) return false;  // If the subgraph is not bipartite
-        } else if (color[it] == color[node]) {
-            return false;  // If a neighboring node has the same color, it's not bipartite
-        }
-    }
-    return true;
-}
-    bool bg(int start,  vector<int>&color, vector<vector<int>>& graph)
+    bool bfs(int start, vector<int>&teams, vector<vector<int>>&graph)
     {
         queue<int>q;
-        color[start] = 1;
         q.push(start);
+        teams[start] = 1;
 
         while(!q.empty())
         {
-            int top = q.front();
+            auto top = q.front();
             q.pop();
 
-            for(int it : graph[top])
+            for(auto it : graph[top])
             {
-                if(color[it] == -1)
+                if(teams[it] == -1)
                 {
-                    color[it] = !color[top];
+                    teams[it] = !teams[top];
                     q.push(it);
                 }
-                else if(color[it] == color[top]) return false;
+                else if (teams[it] == teams[top]) return false;
             }
         }
+
         return true;
+
     }
     bool isBipartite(vector<vector<int>>& graph) {
-        
         int n = graph.size();
-        vector<int>color(n, -1);
-
+        vector<int>teams(n, -1);
         for(int i=0; i<n; i++)
         {
-            if(color[i] == -1)
+            if(teams[i] == -1)
             {
-                if(!bg(i, color, graph)) return false;
-
+                if(!bfs(i, teams, graph)) return false;
             }
         }
-        return true;
 
+        return true;
     }
 };
