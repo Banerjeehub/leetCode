@@ -1,33 +1,27 @@
 class Solution {
 public:
     vector<int> asteroidCollision(vector<int>& as) {
+        vector<int> res;
 
-        // smaller one will explode (if moving in the opposite direction)
-        // same direction will never meet
+        for (int a : as) {
+            bool destroyed = false;
 
-        stack<int> st;
-        for (int i = 0; i < as.size(); i++) {
-            if (st.empty() || as[i] > 0) {
-                st.push(as[i]);
-            } else {
-                while (!st.empty() && st.top() > 0 && abs(as[i]) > st.top()) {
-                    st.pop();
+            while (!res.empty() && res.back() > 0 && a < 0) {
+                if (res.back() < -a) {
+                    res.pop_back(); // previous asteroid destroyed
+                    continue;
+                } else if (res.back() == -a) {
+                    res.pop_back(); // both destroy each other
                 }
-                if (!st.empty() && st.top() == abs(as[i])) {
-                    st.pop();
-                } else {
-                    if(st.empty() || st.top() < 0) st.push(as[i]);
-                }
+                destroyed = true;
+                break;
+            }
+
+            if (!destroyed) {
+                res.push_back(a);
             }
         }
 
-        vector<int> ans;
-        while (!st.empty()) {
-            ans.push_back(st.top());
-            st.pop();
-        }
-
-        reverse(ans.begin(), ans.end());
-        return ans;
+        return res;
     }
 };
