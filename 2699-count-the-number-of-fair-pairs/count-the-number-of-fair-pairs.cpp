@@ -1,51 +1,52 @@
 class Solution {
 public:
-    // Returns how many elements in nums[j] where j > i such that
-    // lower - nums[i] <= nums[j] <= upper - nums[i]
-    int countInRange(int i, vector<int>& arr, int lower, int upper) {
+    // Returns how many elements nums[j] (j > i) make nums[i] + nums[j] lie in [lower, upper]
+    int bs(int i, vector<int>& arr, int lower, int upper)
+    {
         int n = arr.size();
-        int low = i + 1, high = n - 1;
+        int low = i + 1;
+        int high = n - 1;
+        int left = n, right = i;
 
-        // Find first index j such that arr[j] >= lower
-        int left = n;
-        while (low <= high) {
-            int mid = low + (high - low) / 2;
-            if (arr[mid] >= lower) {
+        // Find first index j such that arr[i] + arr[j] >= lower
+        while(low <= high)
+        {
+            int mid = low + (high - low)/2;
+            if(arr[i] + arr[mid] >= lower)
+            {
                 left = mid;
                 high = mid - 1;
-            } else {
-                low = mid + 1;
             }
+            else low = mid + 1;
         }
 
-        low = i + 1, high = n - 1;
-        int right = i;
-        // Find last index j such that arr[j] <= upper
-        while (low <= high) {
-            int mid = low + (high - low) / 2;
-            if (arr[mid] <= upper) {
+        low = i + 1;
+        high = n - 1;
+
+        // Find last index j such that arr[i] + arr[j] <= upper
+        while(low <= high)
+        {
+            int mid = low + (high - low)/2;
+            if(arr[i] + arr[mid] <= upper)
+            {
                 right = mid;
                 low = mid + 1;
-            } else {
-                high = mid - 1;
             }
+            else high = mid - 1;
         }
 
-        if (left <= right)
+        if(left <= right)
             return right - left + 1;
-        else
-            return 0;
+        return 0;
     }
 
     long long countFairPairs(vector<int>& nums, int lower, int upper) {
-        sort(nums.begin(), nums.end()); // sorting can stay, it's not STL-specific logic
+        sort(nums.begin(), nums.end());
         long long count = 0;
 
-        for (int i = 0; i < nums.size(); i++) {
-            int newLower = lower - nums[i];
-            int newUpper = upper - nums[i];
-
-            count += countInRange(i, nums, newLower, newUpper);
+        for(int i = 0; i < nums.size(); i++)
+        {
+            count += bs(i, nums, lower, upper);
         }
 
         return count;
