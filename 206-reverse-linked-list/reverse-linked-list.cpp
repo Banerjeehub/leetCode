@@ -10,22 +10,20 @@
  */
 class Solution {
 public:
-    void reverse(ListNode* &head, ListNode* curr, ListNode* prev)
-    {
-        if(!curr)
-        {
-            head = prev;
-            return;
-        }
-        ListNode* forw = curr->next;
-        curr->next = prev;
-        reverse(head, forw, curr);
-    }
     ListNode* reverseList(ListNode* head) {
         
-        ListNode* prev = nullptr;
         ListNode* curr = head;
-        reverse(head, curr, prev);
-        return head;
+        ListNode* prev = nullptr;
+        ListNode* forw = nullptr;
+
+        while(curr)
+        {
+            forw = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = forw;
+        }
+
+        return prev;
     }
 };
