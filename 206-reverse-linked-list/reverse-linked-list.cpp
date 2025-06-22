@@ -10,17 +10,14 @@
  */
 class Solution {
 public:
-    ListNode* rev(ListNode* &curr, ListNode* prev = NULL)
-    {
-        if(!curr)
-        {
-            return prev;
-        }
-        ListNode* forw = curr -> next;
-        curr -> next = prev;
-        return rev(forw, curr);
-    }
     ListNode* reverseList(ListNode* head) {
-        return rev(head);
+
+        if(!head || !head->next) return head;
+        
+        ListNode* prev = reverseList(head->next);
+        head->next->next = head;
+        head->next = nullptr;
+        return prev;
+
     }
 };
