@@ -1,29 +1,31 @@
 class Solution {
 public:
-    void f(int idx, int target, vector<int>&nums, vector<int>&temp, vector<vector<int>>&ans)
-    {
-        if(target == 0)
-        {
+    void helper(int idx, vector<int>& temp, vector<int>& can, int target,
+                vector<vector<int>>& ans) {
+        if (target == 0) {
             ans.push_back(temp);
             return;
         }
-        if(target < 0) return;
-
-        for(int i=idx; i<nums.size(); i++)
-        {
-            if(idx < i && nums[i] == nums[i-1]) continue;
-            temp.push_back(nums[i]);
-            f(i+1, target - nums[i],nums,  temp, ans);
-            temp.pop_back();
+        if (target < 0)
+            return;
+        if (idx == can.size()) {
+            return;
         }
-    }
-    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
-        
-        vector<vector<int>>ans;
-        vector<int>temp;
-        sort(candidates.begin(), candidates.end());
-        f(0, target, candidates, temp, ans);
-        return ans;
 
+        // not take
+
+        temp.push_back(can[idx]);
+        helper(idx + 1, temp, can, target - can[idx], ans);
+        temp.pop_back();
+        while (idx + 1 < can.size() && can[idx] == can[idx + 1])
+            idx++;
+        helper(idx + 1, temp, can, target, ans);
+    }
+    vector<vector<int>> combinationSum2(vector<int>& can, int target) {
+        sort(can.begin(), can.end());
+        vector<vector<int>> ans;
+        vector<int> temp;
+        helper(0, temp, can, target, ans);
+        return ans;
     }
 };
