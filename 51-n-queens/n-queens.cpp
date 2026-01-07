@@ -1,65 +1,36 @@
 class Solution {
 public:
-    bool isCheck(int row, int col, int n, vector<string>&board)
-    {
-        int dr(row), dc(col);
-        // same row
-
-        while(dc >= 0)
-        {
-            if(board[dr][dc] == 'Q') return false;
-            dc--;
-        }
-
-        dr = row;
-        dc = col;
-
-        //upper diagonal
-
-        while(dr >= 0 && dc >= 0)
-        {
-            if(board[dr][dc] == 'Q') return false;
-            dr--;
-            dc--;
-        }
-
-        //lower diagonal
-        dr = row;
-        dc = col;
-        while(dc >= 0 && dr < n)
-        {
-            if(board[dr][dc] == 'Q') return false;
-            dr++;
-            dc--;
-        }
-
-        return true;
-    }
-    void solve(int col, int n, vector<string>&board, vector<vector<string>>&ans)
-    {
-        if(col == n)
-        {
-            ans.push_back(board);
+    void helper(int row, int n, vector<int>& colPos, vector<int>& diag,
+                vector<int>& antDig, vector<string>& temp,
+                vector<vector<string>> &ans) {
+        if (row == n) {
+            ans.push_back(temp);
             return;
         }
 
-        for(int row=0; row<n; row++)
-        {
-            if(isCheck(row, col, n, board))
-            {
-                board[row][col] = 'Q';
-                solve(col+1, n, board, ans);
-                board[row][col] = '.';
+        for (int col = 0; col < n; col++) {
+            if (!colPos[col] && !diag[row - col + (n - 1)] && !antDig[row + col]) {
+                string rowString(n, '.'); // "...."
+                rowString[col] = 'Q';     // "..Q."
+                temp.push_back(rowString);
+                colPos[col] = 1;
+                diag[row-col + (n - 1)] = 1;
+                antDig[row + col] = 1;
+                helper(row+1, n, colPos, diag, antDig, temp, ans);
+                temp.pop_back();
+                colPos[col] = 0;
+                diag[row-col + (n - 1)] = 0;
+                antDig[row + col] = 0;
             }
         }
     }
     vector<vector<string>> solveNQueens(int n) {
-        
-        vector<vector<string>>ans;
-        string str(n, '.');
-        vector<string>board(n, str);
-        solve(0, n, board, ans);
+        vector<int> colPos(n, 0);
+        vector<int> diag(2 * n - 1, 0);
+        vector<int> antDig(2 * n - 1, 0);
+        vector<vector<string>> ans;
+        vector<string> temp;
+        helper(0, n, colPos, diag, antDig, temp, ans);
         return ans;
-        
     }
 };
