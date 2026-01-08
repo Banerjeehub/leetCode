@@ -1,61 +1,46 @@
 class Solution {
 public:
-    vector<int> nextEmptySpace(vector<vector<char>>& board) {
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                if (board[i][j] == '.') {
-                    return {i, j};
-                }
-            }
-        }
+    bool row[9][10] = {false};
+    bool col[9][10] = {false};
+    bool box[9][10] = {false};
 
-        return {};
-    }
-    bool isSafe(int row, int col, char val, vector<vector<char>>& board){
-        // for the row
-        for(int c = 0; c < 9; c++){
-            if(board[row][c] == val){
-                return false;
-            }
-        }
+    vector<pair<int,int>> empty;
 
-        // for the col
-        for(int r = 0; r < 9; r++){
-            if(board[r][col] == val){
-                return false;
-            }
-        }
+    bool solve(int idx, vector<vector<char>>& board) {
+        if (idx == empty.size()) return true;
 
-        // for the 3 * 3 blocks
-        int sRow = row / 3 * 3;
-        int sCol = col / 3 * 3;
+        int r = empty[idx].first;
+        int c = empty[idx].second;
+        int b = (r / 3) * 3 + (c / 3);
 
-        for(int i=sRow; i<sRow+3; i++){
-            for(int j=sCol; j<sCol+3; j++){
-                if(board[i][j] == val){
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-    bool helper(vector<vector<char>>& board) {
-        auto pos = nextEmptySpace(board);
-        if (pos.empty()) {
-            return true;
-        }
-        int row = pos[0];
-        int col = pos[1];
-        for (char i = '1'; i <= '9'; i++) {
-            if (isSafe(row, col, i, board)) {
-                board[row][col] = i;
-                if(helper(board)) return true;
-                board[row][col] = '.';
+        for (int d = 1; d <= 9; d++) {
+            if (!row[r][d] && !col[c][d] && !box[b][d]) {
+                board[r][c] = d + '0';
+                row[r][d] = col[c][d] = box[b][d] = true;
+
+                if (solve(idx + 1, board)) return true;
+
+                board[r][c] = '.';
+                row[r][d] = col[c][d] = box[b][d] = false;
             }
         }
         return false;
     }
+
     void solveSudoku(vector<vector<char>>& board) {
-        helper(board);
+        // Initialize constraints & empty cells
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] == '.') {
+                    empty.push_back({i, j});
+                } else {
+                    int d = board[i][j] - '0';
+                    int b = (i / 3) * 3 + (j / 3);
+                    row[i][d] = col[j][d] = box[b][d] = true;
+                }
+            }
+        }
+
+        solve(0, board);
     }
 };
