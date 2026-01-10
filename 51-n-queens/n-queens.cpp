@@ -1,36 +1,36 @@
 class Solution {
 public:
-    void helper(int row, int n, vector<int>& colPos, vector<int>& diag,
-                vector<int>& antDig, vector<string>& temp,
-                vector<vector<string>> &ans) {
-        if (row == n) {
+    void helper(int idx, int n, vector<int>& col, vector<int>& diag,
+                vector<int>& antiDiag, vector<string>& temp,
+                vector<vector<string>>& ans) {
+        if (idx == n) {
             ans.push_back(temp);
             return;
         }
 
-        for (int col = 0; col < n; col++) {
-            if (!colPos[col] && !diag[row - col + (n - 1)] && !antDig[row + col]) {
-                string rowString(n, '.'); // "...."
-                rowString[col] = 'Q';     // "..Q."
-                temp.push_back(rowString);
-                colPos[col] = 1;
-                diag[row-col + (n - 1)] = 1;
-                antDig[row + col] = 1;
-                helper(row+1, n, colPos, diag, antDig, temp, ans);
+        for (int i = 0; i < n; i++) {
+            if (!col[i] && !diag[idx - i + (n - 1)] && !antiDiag[idx + i]) {
+                string tempRow(n, '.');
+                tempRow[i] = 'Q';
+                temp.push_back(tempRow);
+                col[i] = 1;
+                diag[idx - i + (n - 1)] = 1;
+                antiDiag[idx + i] = 1;
+                helper(idx + 1, n, col, diag, antiDiag, temp, ans);
+                tempRow[i] = '.';
                 temp.pop_back();
-                colPos[col] = 0;
-                diag[row-col + (n - 1)] = 0;
-                antDig[row + col] = 0;
+                col[i] = 0;
+                diag[idx - i + (n - 1)] = 0;
+                antiDiag[idx + i] = 0;
             }
         }
     }
     vector<vector<string>> solveNQueens(int n) {
-        vector<int> colPos(n, 0);
-        vector<int> diag(2 * n - 1, 0);
-        vector<int> antDig(2 * n - 1, 0);
         vector<vector<string>> ans;
         vector<string> temp;
-        helper(0, n, colPos, diag, antDig, temp, ans);
+        vector<int> col(n, 0);
+        vector<int> diag(n * 2, 0), antiDiag(n * 2, 0);
+        helper(0, n, col, diag, antiDiag, temp, ans);
         return ans;
     }
 };
